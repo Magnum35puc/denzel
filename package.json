@@ -4,22 +4,28 @@
   "description": "> The must-watch Denzel's movies",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Magnum35puc/denzel.git"
+    "url": "git+https://github.com/NRodriguezAlvar/denzel.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Magnum35puc/denzel/issues"
+    "url": "https://github.com/NRodriguezAlvar/denzel/issues"
   },
-  "homepage": "https://github.com/Magnum35puc/denzel#readme",
+  "homepage": "https://github.com/NRodriguezAlvar/denzel#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
-    "mongodb": "^3.5.5"
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.6",
+    "p-limit": "^2.2.2",
+    "p-settle": "^4.0.0"
   }
 }

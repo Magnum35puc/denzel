@@ -1,29 +1,35 @@
-const Express = require("express");
-const BodyParser = require("body-parser");
+'use strict';
+
+//Modules
+var express     =     require('express'),
+    app         =     express(),
+    mongoose     =     require('mongoose'),
+    bodyParser     =     require('body-parser');
+
 const MongoClient = require("mongodb").MongoClient;
 const ObjectId = require("mongodb").ObjectID;
 
-const CONNECTION_URL = "mongodb+srv://UserRWDenzel:admin@denzelcluster-r0xwq.mongodb.net/test?retryWrites=true&w=majority";
-const DATABASE_NAME = "Movies";
+//Models
+var    Movie         =     require('./api/models/libraryModel');
 
-var app = Express();
+global.config     =     require('./modules/config');
+global.db         =     require('./modules/db');
 
-app.use(BodyParser.json());
-app.use(BodyParser.urlencoded({ extended: true }));
+mongoose.Promise = global.Promise;
 
-var database, collection;
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-var port = 9292;
+var routes = require('./api/routes/libraryRoutes');
+routes(app);
+
+var port = config.PORT;
 
 app.listen(port, () => {
-     MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology:true }, (error, client) => {
+    MongoClient.connect(config.URI, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
         if(error) {
             throw error;
         }
-        database = client.db(DATABASE_NAME);
-        collection = database.collection("people");
-        console.log("Connected to `" + DATABASE_NAME + "`!");
+        console.log("Connected to " + config.DB + "!");
     });
 });
-
-console.log('library list RESTful API server started on: ' + port);
