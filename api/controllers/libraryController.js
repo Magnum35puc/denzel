@@ -71,15 +71,31 @@ exports.getMovie = async(req,res) => {
   }
 }
 
-exports.getMovieId = function(req, res) {
-  Movies.find({id: req.params.id}).exec().then(function(movies) {
-    if (movies === null) {
-      throw new Error("Movie not found for value \"" + req.params.id + "\"");
+exports.getMovieId = async(req, res) => {
+  if(req.params.id === "search") {
+    try {
+      let limit = 5, metascore = 0;
+      if(req.query.limit) {
+        limit = Number(req.query.limit);
+      }
+      if(req.query.metascore) {
+        metascore = Number(req.query.metascore);
+      }
+      const movies = await Movies.aggregate([{ $match: { metascore: { $gt: metascore } } }, { $sample: { size: limit } }, { $sort: { metascore: -1 } }])
+      return res.status(200).json(movies);
+    } catch(err) {
+      errorHandler.error(res, err.message, "No movies found", 404);
     }
-    res.status(200).json(movies);
-  }).catch(function(err) {
-    errorHandler.error(res, err.message, "Movie not found", 404);
-  });
+  } else {
+    Movies.find({idMovie: req.params.id}).exec().then(function(movies) {
+      if (movies === null) {
+        throw new Error("Movie not found for value \"" + req.params.id + "\"");
+      }
+      res.status(200).json(movies);
+    }).catch(function(err) {
+      errorHandler.error(res, err.message, "Movie not found", 404);
+    });    
+  }
 }
 
 
