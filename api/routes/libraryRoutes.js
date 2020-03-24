@@ -11,4 +11,6 @@ module.exports = function(app) {
     .get(library.getMovies)
   app.route('/api/movies/:id')
     .get(library.getMovieId)
+    .post(library.editMovie)
+
 };

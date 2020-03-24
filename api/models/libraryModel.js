@@ -15,6 +15,8 @@ var movieSchema = new Schema({
 	title: String,
 	votes: Number,
 	year: Number,
+	date: String,
+	review: String
 }, { versionKey: false });
 
 

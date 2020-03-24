@@ -19,7 +19,7 @@ exports.populate = async(req, res) => {
     for(let i = 0; i < moviesJSON.length; i++) {
         const newMovie = new Movies ({
           actorID: req.params.id,
-          idMovie: moviesJSON[i].id,
+          id: moviesJSON[i].id,
           link: moviesJSON[i].link,
           metascore: moviesJSON[i].metascore,
           poster: moviesJSON[i].poster,
@@ -72,7 +72,7 @@ exports.getMovie = async(req,res) => {
 }
 
 exports.getMovieId = function(req, res) {
-  Movies.find({idMovie: req.params.id}).exec().then(function(movies) {
+  Movies.find({id: req.params.id}).exec().then(function(movies) {
     if (movies === null) {
       throw new Error("Movie not found for value \"" + req.params.id + "\"");
     }
@@ -82,3 +82,14 @@ exports.getMovieId = function(req, res) {
   });
 }
 
+
+exports.editMovie = function(req, res) {
+  Movies.findOneAndUpdate({id: req.params.id}, req.body, {new: true}).exec().then(function(movies) {
+    if (movies === null) {
+      throw new Error("Movie not found for value \"" + req.params.id + "\"");
+    }
+    res.status(200).json(movies);
+  }).catch(function(err) {
+    errorHandler.error(res, err.message, "Movie not found", 404);
+  });
+}
